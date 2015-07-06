@@ -132,6 +132,7 @@ public class Chip {
                         break;
                     }
                     case 0x000E: { //00EE	Returns from a subroutine.
+                        --stackPointer;
                         pc = stack[stackPointer];
                         pc += 2;
                         break;
