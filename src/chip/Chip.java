@@ -370,9 +370,61 @@ public class Chip {
                         pc += 2;
                         break;
                     }
+                    case 0x0018: { //FX18	Sets the sound timer to VX.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        delay_s = V[x];
+                        pc += 2;
+                        break;
+                    }
+                    case 0x001E: { //FX1E	Adds VX to I.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        if ((V[x] + I) > MEM_SIZE )
+                            V[0xF] = 1;
+                        else
+                            V[0xF] = 0;
+                        I += V[x];
+                        pc += 2;
+                        break;
+                    }
+                    case 0x0029: { //FX29	Sets I to the location of the sprite for the character in VX.
+                                   // Characters 0-F (in hexadecimal) are represented by a 4x5 font.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        I = (char)(V[x] * 5);
+                        pc += 2;
+                        break;
+                    }
+                    case 0x0033: { // FX33	Stores the Binary-coded decimal representation of VX,
+                                   // with the most significant of three digits at the address in I,
+                                   // the middle digit at I plus 1, and the least significant digit at I plus 2.
+                                   // (In other words, take the decimal representation of VX, place the hundreds digit in memory
+                                   // at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
+                                   // WTF?
+                        // TODO: Implement this mess
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        pc += 2;
+                        break;
 
-
-
+                    }
+                    case 0x0055: { //FX55	Stores V0 to VX in memory starting at address I.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        for (int i = 0; i <= x ; ++i) {
+                            memory[I + i] = V[i];
+                        }
+                        // On the original interpreter, when the operation is done, I = I + X + 1.
+                        I += x + 1;
+                        pc += 2;
+                        break;
+                    }
+                    case 0x0065: { //FX65	Fills V0 to VX with values from memory starting at address I.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        for (int i = 0; i <= x ; ++i) {
+                            V[i] = memory[I + i];
+                        }
+                        // On the original interpreter, when the operation is done, I = I + X + 1.
+                        I += x + 1;
+                        pc += 2;
+                        break;
+                    }
                 }
                 break;
             }
