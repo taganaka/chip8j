@@ -321,18 +321,19 @@ public class Chip {
                 break;
             }
             case 0xE000: {
-                switch (opcode & 0x000F) {
-                    case 0x000E: { //EX9E	Skips the next instruction if the key stored in VX is pressed.
+                switch (opcode & 0x00FF) {
+                    case 0x009E: { //EX9E	Skips the next instruction if the key stored in VX is pressed.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        if (keys[V[x]] == 0)
+                        if (keys[V[x]] != 0)
                             pc += 4;
                         else
                             pc += 2;
                         break;
                     }
-                    case 0x0001: { //EXA1	Skips the next instruction if the key stored in VX isn't pressed.
+                    case 0x00A1: { //EXA1	Skips the next instruction if the key stored in VX isn't pressed.
+                        System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        if (keys[V[x]] != 0)
+                        if (keys[V[x]] == 0)
                             pc += 4;
                         else
                             pc += 2;
