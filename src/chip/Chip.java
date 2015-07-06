@@ -2,7 +2,6 @@ package chip;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
@@ -18,7 +17,7 @@ public class Chip {
     static int KEYS_SIZE     = 16;
     static int SCREEN_WIDTH  = 64;
     static int SCREEN_HEIGHT = 32;
-    static char INIT_PADDING  = 0x200;
+    static char INIT_PADDING = 0x200;
 
     // Memory allocation
     private char[] memory;
@@ -68,6 +67,10 @@ public class Chip {
         ioHandler = handler;
 
         rnd = new Random();
+        clearScreen();
+
+        for (int i = 0; i < keys.length; i++)
+            keys[i] = 0;
     }
 
     public void run(){
@@ -306,13 +309,71 @@ public class Chip {
                 V[0xF] = 0;
                 for (int yline = 0; yline < height; yline++){
                     char p = memory[I + yline];
+                    // TODO: to be implemented
                     for(int xline = 0; xline < 8; xline++) {
 
                     }
                 }
+                pc += 2;
+                needRedrawing = true;
                 break;
             }
+            case 0xE000: {
+                switch (opcode & 0x000F) {
+                    case 0x000E: { //EX9E	Skips the next instruction if the key stored in VX is pressed.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        if (keys[V[x]] == 0)
+                            pc += 4;
+                        else
+                            pc += 2;
+                        break;
+                    }
+                    case 0x0001: { //EXA1	Skips the next instruction if the key stored in VX isn't pressed.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        if (keys[V[x]] != 0)
+                            pc += 4;
+                        else
+                            pc += 2;
+                        break;
 
+                    }
+
+                    default:
+                        System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
+                }
+                break;
+            }
+            case 0xF000: {
+                switch (opcode & 0x00FF) {
+                    case 0x0007: { //FX07	Sets VX to the value of the delay timer.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        V[x] = (char)delay_t;
+                        pc += 2;
+                        break;
+                    }
+                    case 0x000A: { //FX0A	A key press is awaited, and then stored in VX.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        for (int i = 0; i < keys.length; i++) {
+                            if (keys[i] != 0){
+                                V[x] = (char)keys[i];
+                            }
+                        }
+                        //TODO: Implement keys
+                        pc += 2;
+                        break;
+                    }
+                    case 0x0015: { //FX15	Sets the delay timer to VX.
+                        char x = (char)((opcode & 0x0F00) >> 8);
+                        delay_t = V[x];
+                        pc += 2;
+                        break;
+                    }
+
+
+
+                }
+                break;
+            }
             default:
                 System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
         }
