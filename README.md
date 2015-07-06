@@ -9,3 +9,19 @@ This is my attempt to write a CHIP-8 emulator in Java.
 * http://mattmik.com/chip8.html
 
 * http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+
+## TODO (CPU opcodes) ##
+
+* ***FX33*** Missing proper implementation
+
+* ***FX0A*** Keys are not handled yet
+
+* ***DXYN*** Missing proper implementation
+
+## TODO (Emulator) ##
+
+* Game canvass rendering
+
+* Keyboard and keys
+
+* Simulate 60Hz CPU cycle
