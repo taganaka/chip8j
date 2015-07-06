@@ -385,6 +385,16 @@ public class Chip {
             ioHandler.onUpdateScreen();
         }
 
+        if (delay_t > 0)
+            delay_t--;
+
+        if (delay_s > 0){
+            if (delay_s == 1){
+                ioHandler.onEmitSound();
+            }
+            delay_s--;
+        }
+
 
     }
 
