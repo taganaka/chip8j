@@ -139,17 +139,17 @@ public class Chip {
                 break;
 
             case 0x1000: { //1NN Jumps to address NNN
-                pc = (char) (opcode & 0x0FFF);
+                pc = (char)(opcode & 0x0FFF);
                 break;
             }
             case 0x2000: { //2NNN	Calls subroutine at NNN.
                 stack[stackPointer++] = pc;
-                pc = (char) (opcode & 0x0FFF);
+                pc = (char)(opcode & 0x0FFF);
                 break;
             }
             case 0x3000: { //3XNN Skips the next instruction if VX equals NN
-                char x = (char) ((opcode & 0x0F00) >> 8);
-                char nn = (char) (opcode & 0x00FF);
+                char x  = (char)((opcode & 0x0F00) >> 8);
+                char nn = (char)(opcode & 0x00FF);
                 if (V[x] == nn)
                     pc += 4;
                 else
@@ -392,16 +392,16 @@ public class Chip {
             dis = new DataInputStream(new FileInputStream(fileName));
             for(int off = 0; dis.available() > 0 ;){
                 memory[INIT_PADDING + off] = (char)(dis.readByte() & 0xFF);
-                off ++;
+                off++;
             }
-        } catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
             System.exit(1);
-        }finally {
-            if (dis != null){
+        } finally {
+            if (dis != null) {
                 try {
                     dis.close();
-                }catch (Exception ex){}
+                } catch (Exception ex) {}
             }
         }
 
