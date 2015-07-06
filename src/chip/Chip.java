@@ -120,6 +120,7 @@ public class Chip {
          *
          */
 
+        System.out.println("Processing opCode: " + Integer.toHexString(opcode & 0xF000));
         switch (opcode & 0xF000){ // opCommand is in in the first nibble
             case 0x0000:
                 switch (opcode & 0x000F){
