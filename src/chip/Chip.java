@@ -177,12 +177,14 @@ public class Chip {
                 char nn = (char)(opcode & 0x00FF);
                 V[x] = nn;
                 pc += 2;
+                break;
             }
             case 0x7000: { //7XNN Adds NN to VX.
                 char x = (char)((opcode & 0x0F00) >> 8);
                 char nn = (char)(opcode & 0x00FF);
                 V[x] += nn;
                 pc += 2;
+                break;
             }
 
             case 0x8000: // Other data in the last nibble
@@ -308,13 +310,12 @@ public class Chip {
 
                     }
                 }
+                break;
             }
 
             default:
                 System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
         }
-        // Decode opCode
-        // Execute opCode
 
         if (needRedrawing){
             needRedrawing = false;
