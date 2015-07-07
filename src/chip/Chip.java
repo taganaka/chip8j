@@ -123,6 +123,7 @@ public class Chip {
          */
 
         System.out.println("Processing opCode: " + Integer.toHexString(opcode & 0xF000));
+        System.out.println("Processing opCode: " + Integer.toHexString(opcode).toUpperCase());
         switch (opcode & 0xF000){ // opCommand is in in the first nibble
             case 0x0000:
                 switch (opcode & 0x000F){
@@ -272,7 +273,7 @@ public class Chip {
                         break;
                     }
                     default:
-                        System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
+                        System.err.println("Unsupported opcode: " + Integer.toHexString(opcode).toUpperCase());
                 }
                 break;
             case 0x9000: { //9XY0	Skips the next instruction if VX doesn't equal VY.
