@@ -122,7 +122,6 @@ public class Chip {
          *
          */
 
-        System.out.println("Processing opCode: " + Integer.toHexString(opcode & 0xF000));
         System.out.println("Processing opCode: " + Integer.toHexString(opcode).toUpperCase());
         switch (opcode & 0xF000){ // opCommand is in in the first nibble
             case 0x0000:
@@ -328,19 +327,24 @@ public class Chip {
                 switch (opcode & 0x00FF) {
                     case 0x009E: { //EX9E	Skips the next instruction if the key stored in VX is pressed.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        if (keys[V[x]] != 0)
+                        int key = V[x];
+
+                        if(keys[key] == 1)
                             pc += 4;
                         else
                             pc += 2;
+                        
                         break;
                     }
                     case 0x00A1: { //EXA1	Skips the next instruction if the key stored in VX isn't pressed.
-                        System.err.println("Unsupported opcode: " + Integer.toHexString(opcode));
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        if (keys[V[x]] == 0)
+                        int key = V[x];
+
+                        if(keys[key] == 0)
                             pc += 4;
                         else
                             pc += 2;
+
                         break;
 
                     }
@@ -360,13 +364,13 @@ public class Chip {
                     }
                     case 0x000A: { //FX0A	A key press is awaited, and then stored in VX.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        for (int i = 0; i < keys.length; i++) {
-                            if (keys[i] != 0){
-                                V[x] = (char)keys[i];
+                        for(int i = 0; i < keys.length; i++) {
+                            if(keys[i] == 1) {
+                                V[x] = (char)i;
+                                pc += 2;
+                                break;
                             }
                         }
-                        //TODO: Implement keys
-                        pc += 2;
                         break;
                     }
                     case 0x0015: { //FX15	Sets the delay timer to VX.
@@ -414,9 +418,9 @@ public class Chip {
                     }
                     case 0x0055: { //FX55	Stores V0 to VX in memory starting at address I.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        for (int i = 0; i <= x ; ++i) {
+                        for (int i = 0; i <= x ; ++i)
                             memory[I + i] = V[i];
-                        }
+
                         // On the original interpreter, when the operation is done, I = I + X + 1.
                         I += x + 1;
                         pc += 2;
@@ -424,9 +428,9 @@ public class Chip {
                     }
                     case 0x0065: { //FX65	Fills V0 to VX with values from memory starting at address I.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        for (int i = 0; i <= x ; ++i) {
+                        for (int i = 0; i <= x ; ++i)
                             V[i] = memory[I + i];
-                        }
+
                         // On the original interpreter, when the operation is done, I = I + X + 1.
                         I += x + 1;
                         pc += 2;
@@ -453,7 +457,6 @@ public class Chip {
             }
             delay_s--;
         }
-
 
         try {
             Thread.sleep(16);
