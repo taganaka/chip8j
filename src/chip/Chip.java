@@ -449,6 +449,11 @@ public class Chip {
         }
 
 
+        try {
+            Thread.sleep(16);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadROM(String fileName){
