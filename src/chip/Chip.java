@@ -267,7 +267,7 @@ public class Chip {
                     }
                     case 0x000E: { //8XYE	Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.
                         char x = (char)((opcode & 0x0F00) >> 8);
-                        V[0xF] = (char)(V[x] & 0x1);
+                        V[0xF] = (char)(V[x] & 0x80);
                         V[x] = (char)(V[x] << 1);
                         pc += 2;
                         break;
