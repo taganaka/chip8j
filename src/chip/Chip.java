@@ -464,6 +464,10 @@ public class Chip {
                 memory[INIT_PADDING + off] = (char)(dis.readByte() & 0xFF);
                 off++;
             }
+            // Load font set at the beginning
+            for (int i = 0; i < FontSet.chip8_fontset.length; i++) {
+                memory[0x50 + i] = (char)(FontSet.chip8_fontset[i] & 0xFF);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             System.exit(1);
