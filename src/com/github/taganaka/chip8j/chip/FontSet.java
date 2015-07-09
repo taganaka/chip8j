@@ -1,4 +1,4 @@
-package chip;
+package com.github.taganaka.chip8j.chip;
 
 /**
  * Created by Francesco Laurita <francesco.laurita@gmail.com>  on 7/5/15.
