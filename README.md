@@ -1,6 +1,8 @@
 # CHIP-8 Emulator #
 
-This is my attempt to write a CHIP-8 emulator in Java.
+This is my attempt to write a (Super)CHIP-8 emulator in Java.
+
+![Space invaders](https://cloud.githubusercontent.com/assets/386629/8596645/71e0dcb4-2605-11e5-85db-f1844d451641.png)
 
 ## CHIP-8 Resources ##
 
@@ -12,16 +14,20 @@ This is my attempt to write a CHIP-8 emulator in Java.
 
 ## TODO (CPU opcodes) ##
 
-* ***FX33*** Missing proper implementation
+* Add support for Super(CHIP) 8 opcodes extension  
 
-* ***FX0A*** Keys are not handled yet
+* Better keyboard event support
 
-* ***DXYN*** Missing proper implementation
+* Better CPU speed emulation https://github.com/AfBu/haxe-chip-8-emulator/wiki/(Super)CHIP-8-Secrets
+
+* Not sure if collisions are correctly detected
 
 ## TODO (Emulator) ##
 
-* Game canvass rendering
+* Nicer UI
 
-* Keyboard and keys
+* Debug window
 
-* Simulate 60Hz CPU cycle
+* Sound support (buzz)
+
+* Game canvass should be resizable
