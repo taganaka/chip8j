@@ -58,7 +58,7 @@ public class Main extends Thread implements Chip.IOHandler{
 
     @Override
     public void onEmitSound() {
-
+        java.awt.Toolkit.getDefaultToolkit().beep();
     }
 
 }
